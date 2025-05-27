@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - WizRD</title>
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F97316 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .testimonial-bg {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #1E40AF 100%);
+        }
+        .star-pattern {
+            background-image: radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                              radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.5), transparent),
+                              radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                              radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.5), transparent);
+            background-repeat: repeat;
+            background-size: 150px 100px;
+        }
+        #slider-container {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+            width: 100%;
+            border-radius: 36px;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateX(100%);
+            pointer-events: none;
+        }
+        .slide > div {
+            height: 100%;
+            border-radius: 36px;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+        .slide.next {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-6xl w-full bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden">
+            <div class="flex flex-col lg:flex-row">
+                <!-- Left Panel - Sign Up Form -->
+                <div class="lg:w-1/2 p-8 lg:p-12 bg-black/40 backdrop-blur-md">
+                    <!-- Logo -->
+                    <div class="flex items-center mb-8">
+                        <img src="{% static 'images/WizRD_Logo.png' %}" alt="WizRD" class="h-20 w-auto">
+                    </div>
+
+                    <div class="max-w-md">
+                        <h1 class="text-3xl lg:text-4xl font-bold text-white mb-2">Create Account</h1>
+                        <p class="text-white/80 mb-8">Please fill in your details to sign up</p>
+
+                        <form class="space-y-6">
+                            <!-- Full Name -->
+                            <div>
+                                <label class="block text-white/90 text-sm font-medium mb-2">Full Name</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter your full name"
+                                    class="w-full px-4 py-4 bg-black/50 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
+                                >
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-white/90 text-sm font-medium mb-2">Email</label>
+                                <input 
+                                    type="email" 
+                                    placeholder="Enter your Email"
+                                    class="w-full px-4 py-4 bg-black/50 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
+                                >
+                            </div>
+
+                            <!-- Password -->
+                            <div>
+                                <label class="block text-white/90 text-sm font-medium mb-2">Password</label>
+                                <input 
+                                    type="password" 
+                                    placeholder="Enter your Password"
+                                    class="w-full px-4 py-4 bg-black/50 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
+                                >
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div>
+                                <label class="block text-white/90 text-sm font-medium mb-2">Confirm Password</label>
+                                <input 
+                                    type="password" 
+                                    placeholder="Enter your Password again"
+                                    class="w-full px-4 py-4 bg-black/50 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-all duration-300"
+                                >
+                            </div>
+
+                            <!-- Terms and Conditions -->
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" id="terms" class="w-4 h-4 text-pink-500 bg-transparent border-2 border-white/30 rounded focus:ring-pink-500">
+                                <label for="terms" class="text-white/80 text-sm">I agree to the Terms and Conditions</label>
+                            </div>
+
+                            <!-- Sign Up Button -->
+                            <button 
+                                type="submit"
+                                class="w-full bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold py-4 rounded-2xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300"
+                            >
+                                Sign up
+                            </button>
+
+                            <!-- Already have account -->
+                            <p class="text-center text-white/80 text-sm">
+                                Already have an account? 
+                                <a href="#" class="text-orange-300 hover:text-orange-200 font-medium">Sign in</a>
+                            </p>
+                        </form>
+
+                        <!-- Social Login -->
+                        <div class="flex justify-center space-x-4 mt-8">
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                </svg>
+                            </button>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="#333" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </button>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Signup Info Slider -->
+                <div class="lg:w-1/2 relative p-8 lg:p-12 bg-black/40 backdrop-blur-xl text-white">
+                    <div class="max-w-md mx-auto lg:mx-0 space-y-8">
+                        
+                        <!-- Slider Container -->
+                        <div id="slider-container">
+                            {% include 'website/signup_slider.html' %}
+                        </div>
+
+                        <!-- Navigation buttons -->
+                        <div class="flex space-x-3">
+                            <button onclick="prevSlide()" class="w-12 h-12 bg-pink-500/30 rounded-full flex items-center justify-center hover:bg-pink-500/50 transition-colors">
+                                <svg class="w-5 h-5" fill="white" viewBox="0 0 24 24">
+                                    <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+                                </svg>
+                            </button>
+                            <button onclick="nextSlide()" class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors">
+                                <svg class="w-5 h-5" fill="white" viewBox="0 0 24 24">
+                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- CTA Box with same styling -->
+                        <div class="relative rounded-[36px] bg-white/90 p-6 clip-top-right-bottom-left text-gray-800 backdrop-blur-sm">
+                            <h3 class="text-xl font-bold mb-2">Your go-to place for app generation through AI</h3>
+                            <p class="text-sm text-gray-600 mb-4">AI powered App</p>
+
+                            <!-- User avatars -->
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full border-2 border-white"></div>
+                                <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full border-2 border-white"></div>
+                                <div class="w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full border-2 border-white"></div>
+                                <div class="w-8 h-8 bg-gradient-to-r from-orange-400 to-red-400 rounded-full border-2 border-white"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 3;
+        let isAnimating = false;
+
+        function showSlide(slideNumber, direction = 'next') {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            // Get all slides
+            const slides = document.querySelectorAll('.slide');
+            const currentSlideElement = document.querySelector('.slide.active');
+            const nextSlideElement = document.querySelector(`[data-slide="${slideNumber}"]`);
+
+            // Remove all classes
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'prev', 'next');
+            });
+
+            // Add appropriate classes for animation
+            if (currentSlideElement) {
+                currentSlideElement.classList.add(direction === 'next' ? 'prev' : 'next');
+            }
+            nextSlideElement.classList.add('active');
+
+            // Update current slide number
+            currentSlide = slideNumber;
+
+            // Reset animation flag after transition
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500); // Match this with CSS transition duration
+        }
+
+        function nextSlide() {
+            const nextSlideNumber = currentSlide === totalSlides ? 1 : currentSlide + 1;
+            showSlide(nextSlideNumber, 'next');
+        }
+
+        function prevSlide() {
+            const prevSlideNumber = currentSlide === 1 ? totalSlides : currentSlide - 1;
+            showSlide(prevSlideNumber, 'prev');
+        }
+
+        // Initialize the first slide
+        showSlide(1);
+
+        // Optional: Auto-advance slides every 5 seconds
+        //let slideInterval = setInterval(nextSlide, 5000);
+
+        // Pause auto-advance when hovering over the slider
+        document.getElementById('slider-container').addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        // Resume auto-advance when mouse leaves the slider
+        document.getElementById('slider-container').addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+    </script>
+</body>
+</html>
