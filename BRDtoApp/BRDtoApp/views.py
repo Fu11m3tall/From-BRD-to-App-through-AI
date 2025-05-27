@@ -2,10 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login  # Import with alias
 
 def home(request):
     #return HttpResponse("Hello, World. You are all noobs at Home page")
-    return render(request, 'website/index.html')
+    return render(request, 'website/home.html')
 
 def about(request):
     #return HttpResponse("Hello, World. You are all noobs at About page")
@@ -67,15 +68,17 @@ def login(request):
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
-            login(request, user)
+            auth_login(request, user)  # Use the aliased function
             messages.success(request, f'Welcome back, {user.username}!')
-            return redirect('home')  # Replace 'home' with your actual home route name
+            return redirect('home')
         else:
             messages.error(request, 'Invalid email or password.')
             return render(request, 'website/login.html')
 
     return render(request, 'website/login.html')
 
+def brd_upload(request):
+    return render(request, 'website/brd-upload.html')
 
 
 

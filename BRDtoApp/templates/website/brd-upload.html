@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload BRD - WizRD AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-blue': '#3B82F6',
+                        'gradient-start': '#8B5CF6',
+                        'gradient-mid': '#EC4899',
+                        'gradient-end': '#F97316',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F97316 100%);
+        }
+        .dark-gradient-bg {
+            background: linear-gradient(135deg, #4C1D95 0%, #BE185D 50%, #C2410C 100%);
+        }
+        .neo-card {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.1), -20px -20px 60px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        .dark .neo-card {
+            background: rgba(31, 41, 55, 0.95);
+            box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.3), -20px -20px 60px rgba(55, 65, 81, 0.1);
+        }
+        .drag-over {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border-color: #8B5CF6;
+            transform: scale(1.02);
+        }
+        .processing-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #8B5CF6, #EC4899, #F97316);
+            animation: progress 3s ease-in-out;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .chatbot-bubble {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .step-active {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+        }
+        .step-inactive {
+            background: #E5E7EB;
+            color: #6B7280;
+        }
+        .dark .step-inactive {
+            background: #374151;
+            color: #9CA3AF;
+        }
+        .file-upload-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .typing-animation::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center mr-3">
+                        <span class="text-white font-bold text-sm">WizRD</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900 dark:text-white">WizRD AI</span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Docs</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pricing</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Use Cases</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Blog</a>
+                </nav>
+
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button id="profileBtn" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                        <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center">
+                            <span class="text-white text-xs font-semibold">JD</span>
+                        </div>
+                        <span class="hidden md:block">Profile</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-64 neo-card rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                        <div class="p-4">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
+                                    <span class="text-white font-semibold">JD</span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">John Doe</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">john.doe@example.com</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Dark Mode Toggle -->
+                            <div class="flex items-center justify-between py-2 mb-3 border-t border-gray-200 dark:border-gray-700 pt-3">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Dark Mode</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="darkModeToggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500"></div>
+                                </label>
+                            </div>
+                            
+                            <!-- Logout Button -->
+                            <button class="w-full text-left px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Upload Your BRD</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400">Transform your Business Requirements Document into a working app</p>
+        </div>
+
+        <!-- Progress Pipeline -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div id="step1" class="step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4">1</div>
+                    <span class="text-sm font-medium text-gray-900 dark:text-white">Upload BRD</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 dark:bg-gray-700 mx-4 rounded-full">
+                    <div id="progress1" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500" style="width: 33%"></div>
+                </div>
+                <div class="flex items-center">
+                    <div id="step2" class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4">2</div>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">AI Analysis</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 dark:bg-gray-700 mx-4 rounded-full">
+                    <div id="progress2" class="h-full bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="flex items-center">
+                    <div id="step3" class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 ml-4">App Generation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Upload Section -->
+            <div class="lg:col-span-2">
+                <!-- Drag & Drop Zone -->
+                <div id="dropZone" class="neo-card rounded-2xl p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 text-center hover:border-purple-400 dark:hover:border-purple-500 transition-all duration-300 cursor-pointer file-upload-hover">
+                    <div id="uploadContent">
+                        <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Drop your BRD here</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">or click to browse files</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500">Supports PDF, DOC, DOCX, TXT (Max 10MB)</p>
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.txt" multiple>
+                        <button onclick="document.getElementById('fileInput').click()" class="mt-4 px-6 py-3 gradient-bg text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                            Choose Files
+                        </button>
+                    </div>
+                    
+                    <!-- Processing State -->
+                    <div id="processingContent" class="hidden">
+                        <div class="processing-animation">
+                            <svg class="mx-auto h-16 w-16 text-purple-500 mb-4" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="8" fill="none" stroke-dasharray="283" stroke-dashoffset="75" transform="rotate(-90 50 50)">
+                                    <animateTransform attributeName="transform" type="rotate" values="-90 50 50;270 50 50" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Processing your BRD...</h3>
+                        <p class="text-gray-600 dark:text-gray-400">AI is analyzing your requirements</p>
+                        <div class="mt-4 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div id="processingProgress" class="progress-bar h-2 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Uploaded Files List -->
+                <div id="filesList" class="hidden mt-6 neo-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Uploaded Files</h3>
+                    <div id="filesContainer"></div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div id="analysisResults" class="hidden mt-6 neo-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">AI Analysis Results</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                            <span class="text-green-800 dark:text-green-400 font-medium">Requirements Clarity</span>
+                            <span class="text-green-600 dark:text-green-400 font-bold">95%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                            <span class="text-blue-800 dark:text-blue-400 font-medium">Technical Feasibility</span>
+                            <span class="text-blue-600 dark:text-blue-400 font-bold">88%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
+                            <span class="text-yellow-800 dark:text-yellow-400 font-medium">Estimated Complexity</span>
+                            <span class="text-yellow-600 dark:text-yellow-400 font-bold">Medium</span>
+                        </div>
+                    </div>
+                    <button id="generateAppBtn" class="w-full mt-6 px-6 py-3 gradient-bg text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        Generate App Prototype
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Preview & Project Management -->
+            <div class="lg:col-span-1">
+                <!-- Project Dashboard -->
+                <div class="neo-card rounded-2xl p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Projects</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white text-sm">E-commerce App</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">2 hours ago</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full">Completed</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white text-sm">CRM Dashboard</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">1 day ago</p>
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs rounded-full">In Progress</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white text-sm">Task Manager</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">3 days ago</p>
+                            </div>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 text-xs rounded-full">Draft</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div id="livePreview" class="hidden neo-card rounded-2xl p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Live Preview</h3>
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 min-h-[300px] flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-16 h-16 gradient-bg rounded-xl mx-auto mb-4 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400">App preview will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Help & Tips -->
+                <div class="neo-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">💡 Tips for Better Results</h3>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            Include clear user stories and acceptance criteria
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Specify UI/UX requirements and wireframes
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-500 mr-2">•</span>
+                            Define data models and API endpoints
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">•</span>
+                            Mention technical constraints and preferences
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating AI Chatbot -->
+    <div id="chatbot" class="fixed bottom-6 right-6 z-50">
+        <button id="chatbotBtn" class="chatbot-bubble w-14 h-14 gradient-bg rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-all duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </button>
+        
+        <!-- Chatbot Window -->
+        <div id="chatbotWindow" class="hidden absolute bottom-16 right-0 w-80 h-96 neo-card rounded-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-gray-900 dark:text-white">BRD Assistant</span>
+                </div>
+                <button id="closeChatbot" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto">
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                            <span class="text-white text-xs">AI</span>
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
+                            Hi! I'm here to help you optimize your BRD for better app generation. What questions do you have?
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Ask about BRD formatting..." class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                    <button id="sendChatBtn" class="px-4 py-2 gradient-bg text-white rounded-lg hover:shadow-lg transition-all duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            // Dark Mode Toggle
+const darkModeToggle = document.getElementById('darkModeToggle');
+const html = document.documentElement;
+
+// Check for saved theme or default to light
+const savedTheme = sessionStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') {
+    html.classList.add('dark');
+    darkModeToggle.checked = true;
+}
+
+darkModeToggle.addEventListener('change', () => {
+    if (darkModeToggle.checked) {
+        html.classList.add('dark');
+        sessionStorage.setItem('theme', 'dark');
+    } else {
+        html.classList.remove('dark');
+        sessionStorage.setItem('theme', 'light');
+    }
+});
+
+// Profile Dropdown
+const profileBtn = document.getElementById('profileBtn');
+const profileDropdown = document.getElementById('profileDropdown');
+
+profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (e) => {
+    if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+        profileDropdown.classList.add('hidden');
+    }
+});
+
+// File Upload Functionality
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const uploadContent = document.getElementById('uploadContent');
+const processingContent = document.getElementById('processingContent');
+const filesList = document.getElementById('filesList');
+const filesContainer = document.getElementById('filesContainer');
+const analysisResults = document.getElementById('analysisResults');
+const livePreview = document.getElementById('livePreview');
+const generateAppBtn = document.getElementById('generateAppBtn');
+
+let uploadedFiles = [];
+
+// Drag and drop functionality
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+});
+
+dropZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    if (!dropZone.contains(e.relatedTarget)) {
+        dropZone.classList.remove('drag-over');
+    }
+});
+
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const files = e.dataTransfer.files;
+    handleFiles(files);
+});
+
+dropZone.addEventListener('click', (e) => {
+    if (e.target === dropZone || e.target.closest('#uploadContent')) {
+        fileInput.click();
+    }
+});
+
+fileInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+});
+
+function handleFiles(files) {
+    // Validate files
+    const validFiles = Array.from(files).filter(file => {
+        const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        const isValidType = validTypes.includes(fileExtension);
+        const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+        
+        if (!isValidType) {
+            showNotification('Invalid file type. Please upload PDF, DOC, DOCX, or TXT files.', 'error');
+            return false;
+        }
+        if (!isValidSize) {
+            showNotification('File size too large. Please upload files smaller than 10MB.', 'error');
+            return false;
+        }
+        return true;
+    });
+
+    if (validFiles.length === 0) return;
+
+    uploadedFiles = [...uploadedFiles, ...validFiles];
+    
+    // Show processing state
+    uploadContent.classList.add('hidden');
+    processingContent.classList.remove('hidden');
+    
+    // Update progress steps
+    updateProgressStep(1, 'active');
+    
+    // Simulate processing
+    setTimeout(() => {
+        processingContent.classList.add('hidden');
+        uploadContent.classList.remove('hidden');
+        showUploadedFiles();
+        simulateAnalysis();
+    }, 3000);
+}
+
+function showUploadedFiles() {
+    filesList.classList.remove('hidden');
+    filesContainer.innerHTML = '';
+    
+    uploadedFiles.forEach((file, index) => {
+        const fileElement = document.createElement('div');
+        fileElement.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700';
+        fileElement.innerHTML = `
+            <div class="flex items-center">
+                <svg class="w-8 h-8 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <div>
+                    <p class="font-medium text-gray-900 dark:text-white text-sm">${file.name}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">${formatFileSize(file.size)}</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full">Uploaded</span>
+                <button onclick="removeFile(${index})" class="text-red-500 hover:text-red-700 p-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        `;
+        filesContainer.appendChild(fileElement);
+    });
+}
+
+function removeFile(index) {
+    uploadedFiles.splice(index, 1);
+    if (uploadedFiles.length === 0) {
+        filesList.classList.add('hidden');
+        analysisResults.classList.add('hidden');
+        livePreview.classList.add('hidden');
+        updateProgressStep(1, 'active');
+        updateProgressStep(2, 'inactive');
+        updateProgressStep(3, 'inactive');
+    } else {
+        showUploadedFiles();
+    }
+}
+
+function simulateAnalysis() {
+    // Update progress
+    updateProgressStep(2, 'active');
+    document.getElementById('progress1').style.width = '66%';
+    
+    setTimeout(() => {
+        analysisResults.classList.remove('hidden');
+        livePreview.classList.remove('hidden');
+        
+        // Animate analysis results
+        const metrics = analysisResults.querySelectorAll('.flex.items-center.justify-between');
+        metrics.forEach((metric, index) => {
+            setTimeout(() => {
+                metric.style.opacity = '0';
+                metric.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    metric.style.transition = 'all 0.5s ease';
+                    metric.style.opacity = '1';
+                    metric.style.transform = 'translateY(0)';
+                }, 100);
+            }, index * 200);
+        });
+        
+        showNotification('BRD analysis completed successfully!', 'success');
+    }, 2000);
+}
+
+function updateProgressStep(step, state) {
+    const stepElement = document.getElementById(`step${step}`);
+    const progressBar = document.getElementById(`progress${step}`);
+    
+    if (state === 'active') {
+        stepElement.className = 'step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+        if (progressBar) {
+            progressBar.style.background = 'linear-gradient(90deg, #8B5CF6, #EC4899, #F97316)';
+            progressBar.style.width = '100%';
+        }
+    } else if (state === 'inactive') {
+        stepElement.className = 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+        if (progressBar) {
+            progressBar.style.background = '#E5E7EB';
+            progressBar.style.width = '0%';
+        }
+    }
+}
+
+// Generate App Button
+generateAppBtn.addEventListener('click', () => {
+    updateProgressStep(3, 'active');
+    document.getElementById('progress2').style.width = '100%';
+    
+    generateAppBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Generating App...
+    `;
+    
+    setTimeout(() => {
+        generateAppBtn.innerHTML = 'View Generated App';
+        generateAppBtn.onclick = () => {
+            showNotification('App generated successfully! Redirecting to app preview...', 'success');
+        };
+        showNotification('App prototype generated successfully!', 'success');
+    }, 4000);
+});
+
+// Chatbot functionality
+const chatbotBtn = document.getElementById('chatbotBtn');
+const chatbotWindow = document.getElementById('chatbotWindow');
+const closeChatbot = document.getElementById('closeChatbot');
+const chatInput = document.getElementById('chatInput');
+const sendChatBtn = document.getElementById('sendChatBtn');
+const chatMessages = document.getElementById('chatMessages');
+
+let chatResponses = [
+    "For better BRD analysis, include clear user stories with acceptance criteria.",
+    "Make sure to specify your tech stack preferences and any constraints.",
+    "Include wireframes or mockups if you have them - it helps with UI generation.",
+    "Define your data models and API requirements clearly.",
+    "Don't forget to mention non-functional requirements like performance and security.",
+    "Break down complex features into smaller, manageable components.",
+    "Include examples of similar apps or features you want to emulate."
+];
+
+chatbotBtn.addEventListener('click', () => {
+    chatbotWindow.classList.toggle('hidden');
+    if (!chatbotWindow.classList.contains('hidden')) {
+        chatInput.focus();
+    }
+});
+
+closeChatbot.addEventListener('click', () => {
+    chatbotWindow.classList.add('hidden');
+});
+
+sendChatBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+    
+    // Add user message
+    addChatMessage(message, 'user');
+    chatInput.value = '';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Simulate AI response
+    setTimeout(() => {
+        hideTypingIndicator();
+        const response = chatResponses[Math.floor(Math.random() * chatResponses.length)];
+        addChatMessage(response, 'ai');
+    }, 1500);
+}
+
+function addChatMessage(message, sender) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'flex items-start mb-4';
+    
+    if (sender === 'user') {
+        messageElement.innerHTML = `
+            <div class="flex-1"></div>
+            <div class="bg-purple-500 text-white rounded-lg p-3 text-sm max-w-xs">
+                ${message}
+            </div>
+            <div class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                <span class="text-white text-xs">U</span>
+            </div>
+        `;
+    } else {
+        messageElement.innerHTML = `
+            <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                <span class="text-white text-xs">AI</span>
+            </div>
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm max-w-xs">
+                ${message}
+            </div>
+        `;
+    }
+    
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const typingElement = document.createElement('div');
+    typingElement.id = 'typing-indicator';
+    typingElement.className = 'flex items-start mb-4';
+    typingElement.innerHTML = `
+        <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+            <span class="text-white text-xs">AI</span>
+        </div>
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
+            <div class="typing-animation">Typing...</div>
+        </div>
+    `;
+    chatMessages.appendChild(typingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+// Utility functions
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+    
+    const colors = {
+        success: 'bg-green-500 text-white',
+        error: 'bg-red-500 text-white',
+        info: 'bg-blue-500 text-white',
+        warning: 'bg-yellow-500 text-white'
+    };
+    
+    notification.className += ` ${colors[type]}`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Animate out and remove
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', () => {
+    // Set initial progress
+    updateProgressStep(1, 'active');
+    
+    // Add some interactive hover effects
+    const cards = document.querySelectorAll('.neo-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-2px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Add click effect to buttons
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+});
+</script>
+</body>
+</html>
