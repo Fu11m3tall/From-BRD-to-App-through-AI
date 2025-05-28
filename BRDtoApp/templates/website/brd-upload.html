@@ -127,12 +127,13 @@
                     </button>
                     
                     <!-- Dropdown Menu -->
-                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-64 neo-card rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-64 neo-card rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50">
                         <div class="p-4">
                             <div class="flex items-center space-x-3 mb-4">
                                 <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
                                     <span class="text-white font-semibold">JD</span>
                                 </div>
+                                
                                 <div>
                                     <p class="font-semibold text-gray-900 dark:text-white">John Doe</p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400">john.doe@example.com</p>
@@ -375,423 +376,548 @@
             </div>
         </div>
     </div>
+        <!-- Footer Section -->
+    <footer class="bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                <!-- Brand Section -->
+                <div class="lg:col-span-1">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            BRD Assistant ↗
+                        </h3>
+                    </div>
+                    <!-- Social Links -->
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
-    <script>
-            // Dark Mode Toggle
-const darkModeToggle = document.getElementById('darkModeToggle');
-const html = document.documentElement;
-
-// Check for saved theme or default to light
-const savedTheme = sessionStorage.getItem('theme') || 'light';
-if (savedTheme === 'dark') {
-    html.classList.add('dark');
-    darkModeToggle.checked = true;
-}
-
-darkModeToggle.addEventListener('change', () => {
-    if (darkModeToggle.checked) {
-        html.classList.add('dark');
-        sessionStorage.setItem('theme', 'dark');
-    } else {
-        html.classList.remove('dark');
-        sessionStorage.setItem('theme', 'light');
-    }
-});
-
-// Profile Dropdown
-const profileBtn = document.getElementById('profileBtn');
-const profileDropdown = document.getElementById('profileDropdown');
-
-profileBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    profileDropdown.classList.toggle('hidden');
-});
-
-document.addEventListener('click', (e) => {
-    if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
-        profileDropdown.classList.add('hidden');
-    }
-});
-
-// File Upload Functionality
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const uploadContent = document.getElementById('uploadContent');
-const processingContent = document.getElementById('processingContent');
-const filesList = document.getElementById('filesList');
-const filesContainer = document.getElementById('filesContainer');
-const analysisResults = document.getElementById('analysisResults');
-const livePreview = document.getElementById('livePreview');
-const generateAppBtn = document.getElementById('generateAppBtn');
-
-let uploadedFiles = [];
-
-// Drag and drop functionality
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('drag-over');
-});
-
-dropZone.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    if (!dropZone.contains(e.relatedTarget)) {
-        dropZone.classList.remove('drag-over');
-    }
-});
-
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const files = e.dataTransfer.files;
-    handleFiles(files);
-});
-
-dropZone.addEventListener('click', (e) => {
-    if (e.target === dropZone || e.target.closest('#uploadContent')) {
-        fileInput.click();
-    }
-});
-
-fileInput.addEventListener('change', (e) => {
-    handleFiles(e.target.files);
-});
-
-function handleFiles(files) {
-    // Validate files
-    const validFiles = Array.from(files).filter(file => {
-        const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
-        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-        const isValidType = validTypes.includes(fileExtension);
-        const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
-        
-        if (!isValidType) {
-            showNotification('Invalid file type. Please upload PDF, DOC, DOCX, or TXT files.', 'error');
-            return false;
-        }
-        if (!isValidSize) {
-            showNotification('File size too large. Please upload files smaller than 10MB.', 'error');
-            return false;
-        }
-        return true;
-    });
-
-    if (validFiles.length === 0) return;
-
-    uploadedFiles = [...uploadedFiles, ...validFiles];
-    
-    // Show processing state
-    uploadContent.classList.add('hidden');
-    processingContent.classList.remove('hidden');
-    
-    // Update progress steps
-    updateProgressStep(1, 'active');
-    
-    // Simulate processing
-    setTimeout(() => {
-        processingContent.classList.add('hidden');
-        uploadContent.classList.remove('hidden');
-        showUploadedFiles();
-        simulateAnalysis();
-    }, 3000);
-}
-
-function showUploadedFiles() {
-    filesList.classList.remove('hidden');
-    filesContainer.innerHTML = '';
-    
-    uploadedFiles.forEach((file, index) => {
-        const fileElement = document.createElement('div');
-        fileElement.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700';
-        fileElement.innerHTML = `
-            <div class="flex items-center">
-                <svg class="w-8 h-8 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
+                <!-- Product Column -->
                 <div>
-                    <p class="font-medium text-gray-900 dark:text-white text-sm">${file.name}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">${formatFileSize(file.size)}</p>
+                    <h4 class="font-semibold text-lg mb-6 text-gray-200">Product</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Enterprise</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Downloads</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Students</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Column -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-6 text-gray-200">Resources</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Docs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Forum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Changelog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-6 text-gray-200">Company</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Community</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Column -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-6 text-gray-200">Legal</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Terms</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Security</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacy</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="flex items-center space-x-2">
-                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full">Uploaded</span>
-                <button onclick="removeFile(${index})" class="text-red-500 hover:text-red-700 p-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <!-- Copyright -->
+                    <div class="flex items-center space-x-4">
+                        <p class="text-gray-400 text-sm">© 2025 Made by BRD Assistant</p>
+                    </div>
+
+                    <!-- Language Selector & Certification -->
+                    <div class="flex items-center space-x-6">
+                        <!-- Language Selector -->
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0110.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="text-sm">English</span>
+                        </div>
+
+                        <!-- Theme Toggle -->
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            </svg>
+                        </div>
+
+                        <!-- Certification Badge -->
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span class="text-sm">SOC 2 Certified</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        `;
-        filesContainer.appendChild(fileElement);
-    });
-}
+        </div>
+    </footer>
 
-function removeFile(index) {
-    uploadedFiles.splice(index, 1);
-    if (uploadedFiles.length === 0) {
-        filesList.classList.add('hidden');
-        analysisResults.classList.add('hidden');
-        livePreview.classList.add('hidden');
-        updateProgressStep(1, 'active');
-        updateProgressStep(2, 'inactive');
-        updateProgressStep(3, 'inactive');
-    } else {
-        showUploadedFiles();
-    }
-}
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
 
-function simulateAnalysis() {
-    // Update progress
-    updateProgressStep(2, 'active');
-    document.getElementById('progress1').style.width = '66%';
-    
-    setTimeout(() => {
-        analysisResults.classList.remove('hidden');
-        livePreview.classList.remove('hidden');
+        // Check for saved theme or default to light
+        const savedTheme = sessionStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                html.classList.add('dark');
+                sessionStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                sessionStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Profile Dropdown
         
-        // Animate analysis results
-        const metrics = analysisResults.querySelectorAll('.flex.items-center.justify-between');
-        metrics.forEach((metric, index) => {
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Add a small delay to prevent layout shifts
+            requestAnimationFrame(() => {
+                profileDropdown.classList.toggle('hidden');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // File Upload Functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadContent = document.getElementById('uploadContent');
+        const processingContent = document.getElementById('processingContent');
+        const filesList = document.getElementById('filesList');
+        const filesContainer = document.getElementById('filesContainer');
+        const analysisResults = document.getElementById('analysisResults');
+        const livePreview = document.getElementById('livePreview');
+        const generateAppBtn = document.getElementById('generateAppBtn');
+
+        let uploadedFiles = [];
+
+        // Drag and drop functionality
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            if (!dropZone.contains(e.relatedTarget)) {
+                dropZone.classList.remove('drag-over');
+            }
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        dropZone.addEventListener('click', (e) => {
+            if (e.target === dropZone || e.target.closest('#uploadContent')) {
+                fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            // Validate files
+            const validFiles = Array.from(files).filter(file => {
+                const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
+                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                const isValidType = validTypes.includes(fileExtension);
+                const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+                
+                if (!isValidType) {
+                    showNotification('Invalid file type. Please upload PDF, DOC, DOCX, or TXT files.', 'error');
+                    return false;
+                }
+                if (!isValidSize) {
+                    showNotification('File size too large. Please upload files smaller than 10MB.', 'error');
+                    return false;
+                }
+                return true;
+            });
+
+            if (validFiles.length === 0) return;
+
+            uploadedFiles = [...uploadedFiles, ...validFiles];
+            
+            // Show processing state
+            uploadContent.classList.add('hidden');
+            processingContent.classList.remove('hidden');
+            
+            // Update progress steps
+            updateProgressStep(1, 'active');
+            
+            // Simulate processing
             setTimeout(() => {
-                metric.style.opacity = '0';
-                metric.style.transform = 'translateY(20px)';
+                processingContent.classList.add('hidden');
+                uploadContent.classList.remove('hidden');
+                showUploadedFiles();
+                simulateAnalysis();
+            }, 3000);
+        }
+
+        function showUploadedFiles() {
+            filesList.classList.remove('hidden');
+            filesContainer.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileElement = document.createElement('div');
+                fileElement.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700';
+                fileElement.innerHTML = `
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white text-sm">${file.name}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">${formatFileSize(file.size)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full">Uploaded</span>
+                        <button onclick="removeFile(${index})" class="text-red-500 hover:text-red-700 p-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                filesContainer.appendChild(fileElement);
+            });
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            if (uploadedFiles.length === 0) {
+                filesList.classList.add('hidden');
+                analysisResults.classList.add('hidden');
+                livePreview.classList.add('hidden');
+                updateProgressStep(1, 'active');
+                updateProgressStep(2, 'inactive');
+                updateProgressStep(3, 'inactive');
+            } else {
+                showUploadedFiles();
+            }
+        }
+
+        function simulateAnalysis() {
+            // Update progress
+            updateProgressStep(2, 'active');
+            document.getElementById('progress1').style.width = '66%';
+            
+            setTimeout(() => {
+                analysisResults.classList.remove('hidden');
+                livePreview.classList.remove('hidden');
+                
+                // Animate analysis results
+                const metrics = analysisResults.querySelectorAll('.flex.items-center.justify-between');
+                metrics.forEach((metric, index) => {
+                    setTimeout(() => {
+                        metric.style.opacity = '0';
+                        metric.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            metric.style.transition = 'all 0.5s ease';
+                            metric.style.opacity = '1';
+                            metric.style.transform = 'translateY(0)';
+                        }, 100);
+                    }, index * 200);
+                });
+                
+                showNotification('BRD analysis completed successfully!', 'success');
+            }, 2000);
+        }
+
+        function updateProgressStep(step, state) {
+            const stepElement = document.getElementById(`step${step}`);
+            const progressBar = document.getElementById(`progress${step}`);
+            
+            if (state === 'active') {
+                stepElement.className = 'step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+                if (progressBar) {
+                    progressBar.style.background = 'linear-gradient(90deg, #8B5CF6, #EC4899, #F97316)';
+                    progressBar.style.width = '100%';
+                }
+            } else if (state === 'inactive') {
+                stepElement.className = 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+                if (progressBar) {
+                    progressBar.style.background = '#E5E7EB';
+                    progressBar.style.width = '0%';
+                }
+            }
+        }
+
+        // Generate App Button
+        generateAppBtn.addEventListener('click', () => {
+            updateProgressStep(3, 'active');
+            document.getElementById('progress2').style.width = '100%';
+            
+            generateAppBtn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Generating App...
+            `;
+            
+            setTimeout(() => {
+                generateAppBtn.innerHTML = 'View Generated App';
+                generateAppBtn.onclick = () => {
+                    showNotification('App generated successfully! Redirecting to app preview...', 'success');
+                };
+                showNotification('App prototype generated successfully!', 'success');
+            }, 4000);
+        });
+
+        // Chatbot functionality
+        const chatbotBtn = document.getElementById('chatbotBtn');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const chatInput = document.getElementById('chatInput');
+        const sendChatBtn = document.getElementById('sendChatBtn');
+        const chatMessages = document.getElementById('chatMessages');
+
+        let chatResponses = [
+            "For better BRD analysis, include clear user stories with acceptance criteria.",
+            "Make sure to specify your tech stack preferences and any constraints.",
+            "Include wireframes or mockups if you have them - it helps with UI generation.",
+            "Define your data models and API requirements clearly.",
+            "Don't forget to mention non-functional requirements like performance and security.",
+            "Break down complex features into smaller, manageable components.",
+            "Include examples of similar apps or features you want to emulate."
+        ];
+
+        chatbotBtn.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('hidden');
+            if (!chatbotWindow.classList.contains('hidden')) {
+                chatInput.focus();
+            }
+        });
+
+        closeChatbot.addEventListener('click', () => {
+            chatbotWindow.classList.add('hidden');
+        });
+
+        sendChatBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate AI response
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = chatResponses[Math.floor(Math.random() * chatResponses.length)];
+                addChatMessage(response, 'ai');
+            }, 1500);
+        }
+
+        function addChatMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'flex items-start mb-4';
+            
+            if (sender === 'user') {
+                messageElement.innerHTML = `
+                    <div class="flex-1"></div>
+                    <div class="bg-purple-500 text-white rounded-lg p-3 text-sm max-w-xs">
+                        ${message}
+                    </div>
+                    <div class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                        <span class="text-white text-xs">U</span>
+                    </div>
+                `;
+            } else {
+                messageElement.innerHTML = `
+                    <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                        <span class="text-white text-xs">AI</span>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm max-w-xs">
+                        ${message}
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.id = 'typing-indicator';
+            typingElement.className = 'flex items-start mb-4';
+            typingElement.innerHTML = `
+                <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                    <span class="text-white text-xs">AI</span>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
+                    <div class="typing-animation">Typing...</div>
+                </div>
+            `;
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Utility functions
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+            
+            const colors = {
+                success: 'bg-green-500 text-white',
+                error: 'bg-red-500 text-white',
+                info: 'bg-blue-500 text-white',
+                warning: 'bg-yellow-500 text-white'
+            };
+            
+            notification.className += ` ${colors[type]}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
                 setTimeout(() => {
-                    metric.style.transition = 'all 0.5s ease';
-                    metric.style.opacity = '1';
-                    metric.style.transform = 'translateY(0)';
-                }, 100);
-            }, index * 200);
-        });
-        
-        showNotification('BRD analysis completed successfully!', 'success');
-    }, 2000);
-}
-
-function updateProgressStep(step, state) {
-    const stepElement = document.getElementById(`step${step}`);
-    const progressBar = document.getElementById(`progress${step}`);
-    
-    if (state === 'active') {
-        stepElement.className = 'step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
-        if (progressBar) {
-            progressBar.style.background = 'linear-gradient(90deg, #8B5CF6, #EC4899, #F97316)';
-            progressBar.style.width = '100%';
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
-    } else if (state === 'inactive') {
-        stepElement.className = 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
-        if (progressBar) {
-            progressBar.style.background = '#E5E7EB';
-            progressBar.style.width = '0%';
-        }
-    }
-}
 
-// Generate App Button
-generateAppBtn.addEventListener('click', () => {
-    updateProgressStep(3, 'active');
-    document.getElementById('progress2').style.width = '100%';
-    
-    generateAppBtn.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Generating App...
-    `;
-    
-    setTimeout(() => {
-        generateAppBtn.innerHTML = 'View Generated App';
-        generateAppBtn.onclick = () => {
-            showNotification('App generated successfully! Redirecting to app preview...', 'success');
-        };
-        showNotification('App prototype generated successfully!', 'success');
-    }, 4000);
-});
-
-// Chatbot functionality
-const chatbotBtn = document.getElementById('chatbotBtn');
-const chatbotWindow = document.getElementById('chatbotWindow');
-const closeChatbot = document.getElementById('closeChatbot');
-const chatInput = document.getElementById('chatInput');
-const sendChatBtn = document.getElementById('sendChatBtn');
-const chatMessages = document.getElementById('chatMessages');
-
-let chatResponses = [
-    "For better BRD analysis, include clear user stories with acceptance criteria.",
-    "Make sure to specify your tech stack preferences and any constraints.",
-    "Include wireframes or mockups if you have them - it helps with UI generation.",
-    "Define your data models and API requirements clearly.",
-    "Don't forget to mention non-functional requirements like performance and security.",
-    "Break down complex features into smaller, manageable components.",
-    "Include examples of similar apps or features you want to emulate."
-];
-
-chatbotBtn.addEventListener('click', () => {
-    chatbotWindow.classList.toggle('hidden');
-    if (!chatbotWindow.classList.contains('hidden')) {
-        chatInput.focus();
-    }
-});
-
-closeChatbot.addEventListener('click', () => {
-    chatbotWindow.classList.add('hidden');
-});
-
-sendChatBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
-function sendMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-    
-    // Add user message
-    addChatMessage(message, 'user');
-    chatInput.value = '';
-    
-    // Show typing indicator
-    showTypingIndicator();
-    
-    // Simulate AI response
-    setTimeout(() => {
-        hideTypingIndicator();
-        const response = chatResponses[Math.floor(Math.random() * chatResponses.length)];
-        addChatMessage(response, 'ai');
-    }, 1500);
-}
-
-function addChatMessage(message, sender) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'flex items-start mb-4';
-    
-    if (sender === 'user') {
-        messageElement.innerHTML = `
-            <div class="flex-1"></div>
-            <div class="bg-purple-500 text-white rounded-lg p-3 text-sm max-w-xs">
-                ${message}
-            </div>
-            <div class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
-                <span class="text-white text-xs">U</span>
-            </div>
-        `;
-    } else {
-        messageElement.innerHTML = `
-            <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                <span class="text-white text-xs">AI</span>
-            </div>
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm max-w-xs">
-                ${message}
-            </div>
-        `;
-    }
-    
-    chatMessages.appendChild(messageElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function showTypingIndicator() {
-    const typingElement = document.createElement('div');
-    typingElement.id = 'typing-indicator';
-    typingElement.className = 'flex items-start mb-4';
-    typingElement.innerHTML = `
-        <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-            <span class="text-white text-xs">AI</span>
-        </div>
-        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
-            <div class="typing-animation">Typing...</div>
-        </div>
-    `;
-    chatMessages.appendChild(typingElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function hideTypingIndicator() {
-    const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-}
-
-// Utility functions
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
-    
-    const colors = {
-        success: 'bg-green-500 text-white',
-        error: 'bg-red-500 text-white',
-        info: 'bg-blue-500 text-white',
-        warning: 'bg-yellow-500 text-white'
-    };
-    
-    notification.className += ` ${colors[type]}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.classList.remove('translate-x-full');
-    }, 100);
-    
-    // Animate out and remove
-    setTimeout(() => {
-        notification.classList.add('translate-x-full');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
-}
-
-// Initialize page
-document.addEventListener('DOMContentLoaded', () => {
-    // Set initial progress
-    updateProgressStep(1, 'active');
-    
-    // Add some interactive hover effects
-    const cards = document.querySelectorAll('.neo-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-2px)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Add click effect to buttons
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const ripple = document.createElement('span');
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial progress
+            updateProgressStep(1, 'active');
             
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
+            // Add some interactive hover effects
+            const cards = document.querySelectorAll('.neo-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
             
-            button.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
+            // Add click effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const ripple = document.createElement('span');
+                    const rect = button.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
         });
-    });
-});
-</script>
-</body>
+        </script>
+    </body>
 </html>

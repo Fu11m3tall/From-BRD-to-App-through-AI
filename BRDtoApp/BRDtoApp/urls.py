@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home', views.home, name='home'),
+    path('', views.signup, name='index'),  # Make signup the default landing page
+    path('home/', views.home, name='home'),  # Add trailing slash for consistency
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('services/', views.services, name='services'),
@@ -30,7 +31,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
     path('brd-upload/', views.brd_upload, name='brd-upload'),
-
+    path('pdfparser/', include('pdfparser.urls')),
+     
     
     #keep the below path last since its a resource hungry and heavy path (Hot Reload path)
     path("__reload__/", include("django_browser_reload.urls")),
