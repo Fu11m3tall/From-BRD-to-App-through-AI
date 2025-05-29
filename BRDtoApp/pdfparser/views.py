@@ -1,13 +1,19 @@
+# pdfparser/views.py
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
 from .utils import extract_text_from_pdf
-import os
 
-def test_pdf_parsing(request):
-    # For testing, use a sample PDF stored in your project folder (e.g. inside 'media' folder)
-    sample_pdf_path = os.path.join('media', 'sample_brd.pdf')
-
-    text = extract_text_from_pdf(sample_pdf_path)
-    return HttpResponse(f"<pre>{text}</pre>")
-        
-# Create your views here.
+def upload_and_parse_pdf(request):
+    if request.method == 'POST' and request.FILES.get('file'):
+        uploaded_file = request.FILES['file']
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+        file_path = fs.path(filename)
+        parsed_text = extract_text_from_pdf(file_path)
+        return render(request, 'pdfparser/upload_result.html', {
+            'filename': uploaded_file.name,
+            'parsed_text': parsed_text
+        })
+    return render(request, 'pdfparser/upload_result.html', {
+        'error': 'No file uploaded.'
+    })

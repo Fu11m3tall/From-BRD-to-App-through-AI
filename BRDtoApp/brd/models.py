@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 class BRDVarity(models.Model):
@@ -24,6 +25,25 @@ class BRDVarity(models.Model):
     def __str__(self):
         return self.name
     
-    class Meta:
-        verbose_name = 'BRD Variety'
-        verbose_name_plural = 'BRD Varieties'
+#One to Many
+
+class BRDReview(models.Model):
+    BRD = models.ForeignKey(BRDVarity, on_delete = models.CASCADE, related_name = 'reviews')
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+    date_added = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.BRD.name}'
+
+#One to One
+class brdcertificate(models.Model):
+    BRD = models.OneToOneField(BRDVarity, on_delete = models.CASCADE, related_name = 'certificate')
+    certificate_number = models.CharField(max_length = 100)
+    issued_date = models.DateTimeField(default=timezone.now)
+    valid_until = models.DateTimeField()
+
+    def __str__(self):
+        return f'Certificate for {self.name.BRD}'
+        

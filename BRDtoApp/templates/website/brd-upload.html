@@ -197,6 +197,7 @@
             <div class="lg:col-span-2">
                 <!-- Drag & Drop Zone -->
                 <div id="dropZone" class="neo-card rounded-2xl p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 text-center hover:border-purple-400 dark:hover:border-purple-500 transition-all duration-300 cursor-pointer file-upload-hover">
+                    {% csrf_token %}
                     <div id="uploadContent">
                         <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                             <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -331,7 +332,7 @@
     <div id="chatbot" class="fixed bottom-6 right-6 z-50">
         <button id="chatbotBtn" class="chatbot-bubble w-14 h-14 gradient-bg rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
             </svg>
         </button>
         
@@ -341,7 +342,7 @@
                 <div class="flex items-center">
                     <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center mr-3">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                         </svg>
                     </div>
                     <span class="font-semibold text-gray-900 dark:text-white">BRD Assistant</span>
@@ -604,6 +605,29 @@
             if (validFiles.length === 0) return;
 
             uploadedFiles = [...uploadedFiles, ...validFiles];
+            // Get the CSRF token from the hidden input field
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            validFiles.forEach(file => {
+                const formData = new FormData();
+                formData.append('file', file);
+                // THIS LINE WAS MISSING OR INCORRECTLY PLACED IN THE PREVIOUS RESPONSE
+                formData.append('csrfmiddlewaretoken', csrfToken);
+        
+                fetch('/pdfparser/upload/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Replace or append to your result area
+                    document.getElementById('analysisResults').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error uploading file:', error);
+                    showNotification('An error occurred while parsing the file.', 'error');
+                });
+            });
             
             // Show processing state
             uploadContent.classList.add('hidden');
@@ -748,7 +772,7 @@
             "Define your data models and API requirements clearly.",
             "Don't forget to mention non-functional requirements like performance and security.",
             "Break down complex features into smaller, manageable components.",
-            "Include examples of similar apps or features you want to emulate."
+            "Include examples of similar apps or features you want to emulate.",
         ];
 
         chatbotBtn.addEventListener('click', () => {

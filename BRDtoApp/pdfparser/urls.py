@@ -1,6 +1,8 @@
+# pdfparser/urls.py
 from django.urls import path
-from .views import test_pdf_parsing
+from . import views
 
 urlpatterns = [
-    path('test-pdf/', test_pdf_parsing, name='test_pdf'),
+    path('upload/', views.upload_and_parse_pdf, name='upload_pdf'),
 ]
+
