@@ -84,7 +84,7 @@
                 <div class="relative">
                     <button id="profileBtn" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                         <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-medium">JD</span>
+                            <span class="text-white text-sm font-medium">{{ request.user.username|slice:':2'|upper }}</span>
                         </div>
                         <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -95,7 +95,7 @@
                     <div id="profileDropdown" class="absolute right-0 top-12 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-200">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                             <p class="text-sm text-gray-600 dark:text-gray-300">Signed in as</p>
-                            <p class="font-medium text-gray-900 dark:text-white">john.doe@example.com</p>
+                            <p class="font-medium text-gray-900 dark:text-white">{{ request.user.email }}</p>
                         </div>
                         <div class="p-4 space-y-3">
                             <button class="w-full text-left px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">

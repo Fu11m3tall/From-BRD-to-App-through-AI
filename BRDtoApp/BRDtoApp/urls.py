@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from accounts import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
@@ -30,10 +30,11 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('brd/', include('brd.urls')),
     path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
+    path('login/', views.custom_login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('brd-upload/', views.brd_upload, name='brd-upload'),
     path('pdfparser/', include('pdfparser.urls')),
+    path('accounts/', include('accounts.urls')),
     
     #keep the below path last since its a resource hungry and heavy path (Hot Reload path)
     path("__reload__/", include("django_browser_reload.urls")),

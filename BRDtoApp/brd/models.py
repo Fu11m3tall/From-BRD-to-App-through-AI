@@ -45,5 +45,5 @@ class brdcertificate(models.Model):
     valid_until = models.DateTimeField()
 
     def __str__(self):
-        return f'Certificate for {self.name.BRD}'
+        return f'Certificate for {self.BRD.name}'
         
