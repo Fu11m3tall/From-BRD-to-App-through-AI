@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField  # For PostgreSQL
 
 # Create your models here.
 class BRDVarity(models.Model):
@@ -46,4 +47,5 @@ class brdcertificate(models.Model):
 
     def __str__(self):
         return f'Certificate for {self.BRD.name}'
+
         
