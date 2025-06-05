@@ -56,6 +56,4 @@ def logout(request):
 
 def brd_upload(request):
     return render(request, 'website/brd-upload.html')
-
-
-
+    
