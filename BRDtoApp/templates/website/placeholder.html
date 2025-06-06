@@ -403,3 +403,558 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+                <script>
+                    // Dark Mode Toggle
+                    const darkModeToggle = document.getElementById('darkModeToggle');
+                    const html = document.documentElement;
+            
+                    // Check for saved theme or default to light
+                    const savedTheme = sessionStorage.getItem('theme') || 'light';
+                    if (savedTheme === 'dark') {
+                        html.classList.add('dark');
+                        darkModeToggle.checked = true;
+                    }
+            
+                    darkModeToggle.addEventListener('change', () => {
+                        if (darkModeToggle.checked) {
+                            html.classList.add('dark');
+                            sessionStorage.setItem('theme', 'dark');
+                        } else {
+                            html.classList.remove('dark');
+                            sessionStorage.setItem('theme', 'light');
+                        }
+                    });
+            
+                    // Profile Dropdown
+                    
+                    const profileBtn = document.getElementById('profileBtn');
+                    const profileDropdown = document.getElementById('profileDropdown');
+            
+                    profileBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        // Add a small delay to prevent layout shifts
+                        requestAnimationFrame(() => {
+                            profileDropdown.classList.toggle('hidden');
+                        });
+                    });
+            
+                    document.addEventListener('click', (e) => {
+                        if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+                            profileDropdown.classList.add('hidden');
+                        }
+                    });
+            
+                    // File Upload Functionality
+                    const dropZone = document.getElementById('dropZone');
+                    const fileInput = document.getElementById('fileInput');
+                    const uploadContent = document.getElementById('uploadContent');
+                    const processingContent = document.getElementById('processingContent');
+                    const filesList = document.getElementById('filesList');
+                    const filesContainer = document.getElementById('filesContainer');
+                    const analysisResults = document.getElementById('analysisResults');
+                    const livePreview = document.getElementById('livePreview');
+                    const generateAppBtn = document.getElementById('generateAppBtn');
+            
+                    let uploadedFiles = [];
+            
+                    // Drag and drop functionality
+                    dropZone.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        dropZone.classList.add('drag-over');
+                    });
+            
+                    dropZone.addEventListener('dragleave', (e) => {
+                        e.preventDefault();
+                        if (!dropZone.contains(e.relatedTarget)) {
+                            dropZone.classList.remove('drag-over');
+                        }
+                    });
+            
+                    dropZone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        dropZone.classList.remove('drag-over');
+                        const files = e.dataTransfer.files;
+                        handleFiles(files);
+                    });
+            
+                    dropZone.addEventListener('click', (e) => {
+                        if (e.target === dropZone || e.target.closest('#uploadContent')) {
+                            fileInput.click();
+                        }
+                    });
+            
+                    fileInput.addEventListener('change', (e) => {
+                        handleFiles(e.target.files);
+                    });
+            
+                    function handleFiles(files) {
+                        // Validate files
+                        const validFiles = Array.from(files).filter(file => {
+                            const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
+                            const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                            const isValidType = validTypes.includes(fileExtension);
+                            const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+                            
+                            if (!isValidType) {
+                                showNotification('Invalid file type. Please upload PDF, DOC, DOCX, or TXT files.', 'error');
+                                return false;
+                            }
+                            if (!isValidSize) {
+                                showNotification('File size too large. Please upload files smaller than 10MB.', 'error');
+                                return false;
+                            }
+                            return true;
+                        });
+            
+                        if (validFiles.length === 0) return;
+            
+                        uploadedFiles = [...uploadedFiles, ...validFiles];
+                        // Get the CSRF token from the hidden input field
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+                        validFiles.forEach(file => {
+                            const formData = new FormData();
+                            formData.append('brd_file', file);
+                            // THIS LINE WAS MISSING OR INCORRECTLY PLACED IN THE PREVIOUS RESPONSE
+                            formData.append('csrfmiddlewaretoken', csrfToken);
+                    
+                            fetch('/pdfparser/upload/', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(html => {
+                                // Replace or append to your result area
+                                document.getElementById('analysisResults').innerHTML = html;
+                            })
+                            .catch(error => {
+                                console.error('Error uploading file:', error);
+                                showNotification('An error occurred while parsing the file.', 'error');
+                            });
+                        });
+                        
+                        // Show processing state
+                        uploadContent.classList.add('hidden');
+                        processingContent.classList.remove('hidden');
+                        
+                        // Update progress steps
+                        updateProgressStep(1, 'active');
+                        
+                        // Simulate processing
+                        setTimeout(() => {
+                            processingContent.classList.add('hidden');
+                            uploadContent.classList.remove('hidden');
+                            showUploadedFiles();
+                            simulateAnalysis();
+                        }, 3000);
+                    }
+            
+                    function showUploadedFiles() {
+                        filesList.classList.remove('hidden');
+                        filesContainer.innerHTML = '';
+                        
+                        uploadedFiles.forEach((file, index) => {
+                            const fileElement = document.createElement('div');
+                            fileElement.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700';
+                            fileElement.innerHTML = `
+                                <div class="flex items-center">
+                                    <svg class="w-8 h-8 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-gray-900 dark:text-white text-sm">${file.name}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">${formatFileSize(file.size)}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full">Uploaded</span>
+                                    <button onclick="removeFile(${index})" class="text-red-500 hover:text-red-700 p-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            `;
+                            filesContainer.appendChild(fileElement);
+                        });
+                    }
+            
+                    function removeFile(index) {
+                        uploadedFiles.splice(index, 1);
+                        if (uploadedFiles.length === 0) {
+                            filesList.classList.add('hidden');
+                            analysisResults.classList.add('hidden');
+                            livePreview.classList.add('hidden');
+                            updateProgressStep(1, 'active');
+                            updateProgressStep(2, 'inactive');
+                            updateProgressStep(3, 'inactive');
+                        } else {
+                            showUploadedFiles();
+                        }
+                    }
+            
+                    function simulateAnalysis() {
+                        // Update progress
+                        updateProgressStep(2, 'active');
+                        document.getElementById('progress1').style.width = '66%';
+                        
+                        setTimeout(() => {
+                            analysisResults.classList.remove('hidden');
+                            livePreview.classList.remove('hidden');
+                            
+                            // Animate analysis results
+                            const metrics = analysisResults.querySelectorAll('.flex.items-center.justify-between');
+                            metrics.forEach((metric, index) => {
+                                setTimeout(() => {
+                                    metric.style.opacity = '0';
+                                    metric.style.transform = 'translateY(20px)';
+                                    setTimeout(() => {
+                                        metric.style.transition = 'all 0.5s ease';
+                                        metric.style.opacity = '1';
+                                        metric.style.transform = 'translateY(0)';
+                                    }, 100);
+                                }, index * 200);
+                            });
+                            
+                            showNotification('BRD analysis completed successfully!', 'success');
+                        }, 2000);
+                    }
+            
+                    function updateProgressStep(step, state) {
+                        const stepElement = document.getElementById(`step${step}`);
+                        const progressBar = document.getElementById(`progress${step}`);
+                        
+                        if (state === 'active') {
+                            stepElement.className = 'step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+                            if (progressBar) {
+                                progressBar.style.background = 'linear-gradient(90deg, #8B5CF6, #EC4899, #F97316)';
+                                progressBar.style.width = '100%';
+                            }
+                        } else if (state === 'inactive') {
+                            stepElement.className = 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mr-4';
+                            if (progressBar) {
+                                progressBar.style.background = '#E5E7EB';
+                                progressBar.style.width = '0%';
+                            }
+                        }
+                    }
+            
+                    // Generate App Button
+                    generateAppBtn.addEventListener('click', () => {
+                        updateProgressStep(3, 'active');
+                        document.getElementById('progress2').style.width = '100%';
+                        
+                        generateAppBtn.innerHTML = `
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Generating App...
+                        `;
+                        
+                        setTimeout(() => {
+                            generateAppBtn.innerHTML = 'View Generated App';
+                            generateAppBtn.onclick = () => {
+                                showNotification('App generated successfully! Redirecting to app preview...', 'success');
+                            };
+                            showNotification('App prototype generated successfully!', 'success');
+                        }, 4000);
+                    });
+            
+                    // Chatbot functionality
+                    const chatbotBtn = document.getElementById('chatbotBtn');
+                    const chatbotWindow = document.getElementById('chatbotWindow');
+                    const closeChatbot = document.getElementById('closeChatbot');
+                    const chatInput = document.getElementById('chatInput');
+                    const sendChatBtn = document.getElementById('sendChatBtn');
+                    const chatMessages = document.getElementById('chatMessages');
+            
+                    let chatResponses = [
+                        "For better BRD analysis, include clear user stories with acceptance criteria.",
+                        "Make sure to specify your tech stack preferences and any constraints.",
+                        "Include wireframes or mockups if you have them - it helps with UI generation.",
+                        "Define your data models and API requirements clearly.",
+                        "Don't forget to mention non-functional requirements like performance and security.",
+                        "Break down complex features into smaller, manageable components.",
+                        "Include examples of similar apps or features you want to emulate.",
+                    ];
+            
+                    chatbotBtn.addEventListener('click', () => {
+                        chatbotWindow.classList.toggle('hidden');
+                        if (!chatbotWindow.classList.contains('hidden')) {
+                            chatInput.focus();
+                        }
+                    });
+            
+                    closeChatbot.addEventListener('click', () => {
+                        chatbotWindow.classList.add('hidden');
+                    });
+            
+                    sendChatBtn.addEventListener('click', sendMessage);
+                    chatInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            sendMessage();
+                        }
+                    });
+            
+                    function sendMessage() {
+                        const message = chatInput.value.trim();
+                        if (!message) return;
+                        
+                        // Add user message
+                        addChatMessage(message, 'user');
+                        chatInput.value = '';
+                        
+                        // Show typing indicator
+                        showTypingIndicator();
+                        
+                        // Simulate AI response
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            const response = chatResponses[Math.floor(Math.random() * chatResponses.length)];
+                            addChatMessage(response, 'ai');
+                        }, 1500);
+                    }
+            
+                    function addChatMessage(message, sender) {
+                        const messageElement = document.createElement('div');
+                        messageElement.className = 'flex items-start mb-4';
+                        
+                        if (sender === 'user') {
+                            messageElement.innerHTML = `
+                                <div class="flex-1"></div>
+                                <div class="bg-purple-500 text-white rounded-lg p-3 text-sm max-w-xs">
+                                    ${message}
+                                </div>
+                                <div class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                                    <span class="text-white text-xs">U</span>
+                                </div>
+                            `;
+                        } else {
+                            messageElement.innerHTML = `
+                                <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                                    <span class="text-white text-xs">AI</span>
+                                </div>
+                                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm max-w-xs">
+                                    ${message}
+                                </div>
+                            `;
+                        }
+                        
+                        chatMessages.appendChild(messageElement);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+            
+                    function showTypingIndicator() {
+                        const typingElement = document.createElement('div');
+                        typingElement.id = 'typing-indicator';
+                        typingElement.className = 'flex items-start mb-4';
+                        typingElement.innerHTML = `
+                            <div class="w-6 h-6 gradient-bg rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                                <span class="text-white text-xs">AI</span>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 text-sm">
+                                <div class="typing-animation">Typing...</div>
+                            </div>
+                        `;
+                        chatMessages.appendChild(typingElement);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+            
+                    function hideTypingIndicator() {
+                        const typingIndicator = document.getElementById('typing-indicator');
+                        if (typingIndicator) {
+                            typingIndicator.remove();
+                        }
+                    }
+            
+                    // Utility functions
+                    function formatFileSize(bytes) {
+                        if (bytes === 0) return '0 Bytes';
+                        const k = 1024;
+                        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                        const i = Math.floor(Math.log(bytes) / Math.log(k));
+                        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                    }
+            
+                    function showNotification(message, type = 'info') {
+                        const notification = document.createElement('div');
+                        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+                        
+                        const colors = {
+                            success: 'bg-green-500 text-white',
+                            error: 'bg-red-500 text-white',
+                            info: 'bg-blue-500 text-white',
+                            warning: 'bg-yellow-500 text-white'
+                        };
+                        
+                        notification.className += ` ${colors[type]}`;
+                        notification.textContent = message;
+                        
+                        document.body.appendChild(notification);
+                        
+                        // Animate in
+                        setTimeout(() => {
+                            notification.classList.remove('translate-x-full');
+                        }, 100);
+                        
+                        // Animate out and remove
+                        setTimeout(() => {
+                            notification.classList.add('translate-x-full');
+                            setTimeout(() => {
+                                document.body.removeChild(notification);
+                            }, 300);
+                        }, 3000);
+                    }
+            
+                    // Initialize page
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Set initial progress
+                        updateProgressStep(1, 'active');
+                        
+                        // Add some interactive hover effects
+                        const cards = document.querySelectorAll('.neo-card');
+                        cards.forEach(card => {
+                            card.addEventListener('mouseenter', () => {
+                                card.style.transform = 'translateY(-2px)';
+                            });
+                            card.addEventListener('mouseleave', () => {
+                                card.style.transform = 'translateY(0)';
+                            });
+                        });
+                        
+                        // Add click effect to buttons
+                        const buttons = document.querySelectorAll('button');
+                        buttons.forEach(button => {
+                            button.addEventListener('click', (e) => {
+                                const ripple = document.createElement('span');
+                                const rect = button.getBoundingClientRect();
+                                const size = Math.max(rect.width, rect.height);
+                                const x = e.clientX - rect.left - size / 2;
+                                const y = e.clientY - rect.top - size / 2;
+                                
+                                ripple.style.width = ripple.style.height = size + 'px';
+                                ripple.style.left = x + 'px';
+                                ripple.style.top = y + 'px';
+                                ripple.classList.add('ripple');
+                                
+                                button.appendChild(ripple);
+                                
+                                setTimeout(() => {
+                                    ripple.remove();
+                                }, 600);
+                            });
+                        });
+                    });
+                    </script>
+
+
+
+
+
+
+    import json
+    import logging
+    from django.shortcuts import render
+    from django.http import JsonResponse # Import JsonResponse
+    from .utils.brd_parser import extract_text_from_pdf # No need for extract_tables_from_pdf unless you use it
+    from .utils.gemini_client import analyze_brd
+    
+    # You'll need these for docx/doc parsing if you decide to implement them
+    # from docx import Document # pip install python-docx
+    # from textract import process # pip install textract (might have external dependencies)
+    
+    logger = logging.getLogger(__name__)
+    
+    def upload_brd_view(request):
+        # This view will now always render the 'brd-upload.html' template for GET requests.
+        # For POST requests (AJAX), it will return JSON.
+    
+        if request.method == 'POST':
+            # --- Crucial: Get the file by the name your JavaScript sends it as! ---
+            uploaded_file = request.FILES.get('brd_file') # This now matches 'brd_file' from JS
+            
+            # Default response data structure for JSON
+            response_data = {
+                'status': 'error',
+                'message': 'An unknown error occurred.',
+                'analysis_data': None,
+                'extracted_text': None,
+                'raw_ai_response': None # For debugging AI JSON parsing errors
+            }
+    
+            if not uploaded_file:
+                response_data['message'] = "No file was uploaded. Please select a file and try again."
+                logger.warning("AJAX: No file uploaded in POST request.")
+                return JsonResponse(response_data, status=400) # Bad Request
+    
+            filename = uploaded_file.name # Capture filename
+    
+            try:
+                file_extension = uploaded_file.name.lower().split('.')[-1]
+                extracted_text = None
+    
+                if file_extension == 'pdf':
+                    extracted_text = extract_text_from_pdf(uploaded_file)
+                elif file_extension == 'txt':
+                    extracted_text = uploaded_file.read().decode('utf-8')
+                # Add DOCX/DOC parsing here, remember to handle dependencies:
+                # elif file_extension == 'docx':
+                #     from docx import Document
+                #     doc = Document(uploaded_file)
+                #     extracted_text = "\n".join([p.text for p in doc.paragraphs])
+                # elif file_extension == 'doc':
+                #     response_data['message'] = "'.doc' files require additional setup (e.g., textract) on the server. Please upload .pdf, .docx, or .txt."
+                #     return JsonResponse(response_data, status=400)
+                else:
+                    response_data['message'] = f"Unsupported file type: '.{file_extension}'. Please upload PDF, DOCX, or TXT."
+                    logger.warning(f"AJAX: Unsupported file upload attempt: {uploaded_file.name}")
+                    return JsonResponse(response_data, status=400) # Bad Request
+    
+                if not extracted_text:
+                    response_data['message'] = "Could not extract text from the uploaded file. It might be empty, corrupted, or an unsupported format despite the extension."
+                    return JsonResponse(response_data, status=400)
+    
+                logger.info(f"AJAX: Successfully extracted text from {uploaded_file.name}")
+                
+                # Call Gemini for analysis
+                gemini_raw_response = analyze_brd(extracted_text)
+                response_data['raw_ai_response'] = gemini_raw_response # Always pass raw for debugging
+    
+                logger.info("AJAX: Successfully received AI raw response.")
+    
+                # Attempt to parse the AI's JSON response
+                try:
+                    ai_analysis_data = json.loads(gemini_raw_response)
+                    # Check if the AI's JSON indicates an internal AI error, e.g., if it couldn't structure it
+                    if isinstance(ai_analysis_data, dict) and "error" in ai_analysis_data:
+                         response_data['status'] = 'error'
+                         response_data['message'] = f"AI reported an internal error: {ai_analysis_data.get('error_details', 'No details provided.')}"
+                         response_data['analysis_data'] = ai_analysis_data # Still send the data for client debugging
+                         return JsonResponse(response_data, status=500) # Internal Server Error
+                    
+                    response_data['status'] = 'success'
+                    response_data['message'] = 'BRD analyzed successfully.'
+                    response_data['analysis_data'] = ai_analysis_data
+                    response_data['extracted_text'] = extracted_text # Send extracted text back for display/debugging
+                    logger.info("AJAX: AI response parsed as JSON successfully.")
+                    return JsonResponse(response_data) # Default status is 200 OK
+    
+                except json.JSONDecodeError as e:
+                    response_data['message'] = f"AI response was not valid JSON. Please check prompt or BRD content. Error: {e}"
+                    logger.error(f"AJAX: JSON Decode Error: {e}. Raw AI response: {gemini_raw_response}")
+                    return JsonResponse(response_data, status=500) # Internal Server Error
+                
+            except Exception as e:
+                logger.exception(f"AJAX: An unexpected server-side error occurred during file processing or AI analysis for {filename}.")
+                response_data['message'] = f"An internal server error occurred: {e}"
+                return JsonResponse(response_data, status=500) # Internal Server Error
+        
+        # For GET requests, render the initial HTML page
+        return render(request, 'brd-upload.html') # Ensure this is the correct template name

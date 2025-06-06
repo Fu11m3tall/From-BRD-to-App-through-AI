@@ -202,19 +202,38 @@
             <div class="lg:col-span-2">
                 <!-- Drag & Drop Zone -->
                 <div id="dropZone" class="neo-card rounded-2xl p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 text-center hover:border-purple-400 dark:hover:border-purple-500 transition-all duration-300 cursor-pointer file-upload-hover">
-                    {% csrf_token %}
-                    <div id="uploadContent">
-                        <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Drop your BRD here</h3>
-                        <p class="text-gray-600 dark:text-gray-400 mb-4">or click to browse files</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-500">Supports PDF, DOC, DOCX, TXT (Max 10MB)</p>
-                        <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.txt" multiple>
-                        <button onclick="document.getElementById('fileInput').click()" class="mt-4 px-6 py-3 gradient-bg text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-                            Choose Files
-                        </button>
+                        
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div id="uploadContent">
+                            <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Drop your BRD here</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">or click to browse files</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-500">Supports PDF, DOC, DOCX, TXT (Max 10MB)</p>
+                            <input type="file" id="fileInput" name="brd_file" class="hidden" accept=".pdf,.doc,.docx,.txt" multiple>
+                            
+                            <!-- Choose Files button triggers file selector -->
+                            <button 
+                                type="button" 
+                                onclick="document.getElementById('fileInput').click()" 
+                                class="mt-4 px-6 py-3 gradient-bg text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                                Choose Files
+                            </button>
+                    
+                            <!-- NEW: Submit button to actually send the form -->
+                            <button 
+                                type="submit" 
+                                class="mt-4 ml-4 px-6 py-3 gradient-bg text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                                Upload and Analyze
+                            </button>
+                            </div>
+                        </form>
+                        </div>
                     </div>
+  
                     
                     <!-- Processing State -->
                     <div id="processingContent" class="hidden">
@@ -615,7 +634,7 @@
 
             validFiles.forEach(file => {
                 const formData = new FormData();
-                formData.append('file', file);
+                formData.append('brd_file', file);
                 // THIS LINE WAS MISSING OR INCORRECTLY PLACED IN THE PREVIOUS RESPONSE
                 formData.append('csrfmiddlewaretoken', csrfToken);
         
